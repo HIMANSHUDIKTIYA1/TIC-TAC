@@ -3,34 +3,51 @@
 <head>
   <title>Tic Tac Toe</title>
   <style>
-    .board {
-    
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-gap: 10px;
-      width: 320px;
-      margin: 0 auto;
-    }
-    body{
-      
-      background-color:rgb(78, 74, 74);
-    }
-
-    .cell {
-      width:100px;
-      height: 100px;
-      border: 2px solid #9c9494;
+    body {
+      background-color: #ffebcd;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 40px;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 10px;
+      width: 90vw;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    .cell {
+      width: 100%;
+      padding-top: 100%;
+      position: relative;
+      border: 2px solid #fd7d06fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 5vw;
+      max-font-size: 40px;
       cursor: pointer;
       transition: background-color 0.3s ease;
       border-radius: 50%;
-      border-color: #fd7d06fa;
-      border-bottom: #9c9494;
       border-style: dotted;
-      
+      background-color: #fff;
+    }
+
+    .cell div {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .cell:hover {
@@ -46,63 +63,112 @@
     }
 
     .winner {
-      height: 400px;
-      width: 400px;
-      background-color: #4caf50;
+      animation: winnerAnimation 1s infinite;
     }
 
     .tie {
-      height: 400px;
-      width: 400px;
-      background-color: #ffeb3b;
+      animation: tieAnimation 1s infinite;
     }
-    h1{ 
-      width: 300px;
-       
-        background-color: #9c9494;
-        font-style: oblique;
-        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+    @keyframes winnerAnimation {
+      0% {
+        transform: scale(1);
+        background-color: #4caf50;
+      }
+      50% {
+        transform: scale(1.1);
+        background-color: #8bc34a;
+      }
+      100% {
+        transform: scale(1);
+        background-color: #4caf50;
+      }
     }
-    button{
+
+    @keyframes tieAnimation {
+      0% {
+        transform: scale(1);
+        background-color: #ffeb3b;
+      }
+      50% {
+        transform: scale(1.1);
+        background-color: #ffc107;
+      }
+      100% {
+        transform: scale(1);
+        background-color: #ffeb3b;
+      }
+    }
+
+    h1 {
+      text-align: center;
+      background-color: #9c9494;
+      font-style: oblique;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+
+    button {
       background-color: #2196f3;
       width: 200px;
       height: 45px;
       color: #000000;
-      border-radius:10px;
+      border-radius: 10px;
+      margin: 20px auto;
+      display: block;
     }
-    button:hover{
-        background-color:#000000;
+
+    button:hover {
+      background-color: #000000;
+      color: #ffffff;
     }
-    .isTie{
+
+    .isTie {
       color: #f44336;
     }
-                   
+
+    .win-message {
+      display: flex;
+      padding: 40px;
+      font-size: 2em;
+      color: #ff5722;
+      text-align: center;
+      animation: winMessageAnimation 1s infinite;
+    }
+
+    @keyframes winMessageAnimation {
+      0% {
+        transform: scale(1);
+        color: #ff5722;
+      }
+      50% {
+        transform: scale(1.2);
+        color: #ff9800;
+      }
+      100% {
+        transform: scale(1);
+        color: #ff5722;
+      }
+    }
   </style>
 </head>
 <body>
-
-<br>
-<br>
-<br>
-<br>
-<br>
   <div class="board">
-    <div class="cell"></div>
-    <div class="cell"></div>
-    <div class="cell"></div>
-    <div class="cell"></div>
-    <div class="cell"></div>
-    <div class="cell"></div>
-    <div class="cell"></div>
-    <div class="cell"></div>
-    <div class="cell"></div>
+    <div class="cell"><div></div></div>
+    <div class="cell"><div></div></div>
+    <div class="cell"><div></div></div>
+    <div class="cell"><div></div></div>
+    <div class="cell"><div></div></div>
+    <div class="cell"><div></div></div>
+    <div class="cell"><div></div></div>
+    <div class="cell"><div></div></div>
+    <div class="cell"><div></div></div>
   </div>
 
   <script>
     // JavaScript code for the Tic Tac Toe game
     document.addEventListener('DOMContentLoaded', () => {
       const board = document.querySelector('.board');
-      const cells = document.querySelectorAll('.cell');
+      const cells = document.querySelectorAll('.cell div');
       const restartBtn = document.createElement('button');
       let currentPlayer = 'X';
       let gameOver = false;
@@ -155,10 +221,10 @@
 
         if (isTie) {
           board.classList.add('tie');
-          board.insertAdjacentHTML('beforebegin', '<p>It\'s a tie!</p>');
+          board.insertAdjacentHTML('beforebegin', '<p class="win-message">It\'s a tie!</p>');
         } else {
           board.classList.add('winner');
-          board.insertAdjacentHTML('beforebegin', '<p>Player ' + currentPlayer + ' wins!</p>');
+          board.insertAdjacentHTML('beforebegin', '<p class="win-message">Player ' + currentPlayer + ' wins!</p>');
         }
 
         restartBtn.textContent = 'Restart';
@@ -185,8 +251,6 @@
         });
       }
     });
-    
-     
   </script>
 </body>
 </html>
